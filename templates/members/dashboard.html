@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — GymFlow{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Dashboard</h1>
+    <div class="text-muted">Welcome back, {{ request.user.get_full_name|default:request.user.username }}</div>
+  </div>
+  <a href="{% url 'members:create' %}" class="btn btn-primary">
+    <i class="bi bi-person-plus me-1"></i> Add Member
+  </a>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <div class="stat-value">{{ total_members }}</div>
+          <div class="stat-label">Total Members</div>
+        </div>
+        <div class="stat-icon" style="background:#eeedfe;color:#7F77DD"><i class="bi bi-people-fill"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <div class="stat-value text-success">{{ active_members }}</div>
+          <div class="stat-label">Active Members</div>
+        </div>
+        <div class="stat-icon" style="background:#e8f5e9;color:#2e7d32"><i class="bi bi-person-check-fill"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <div class="stat-value text-warning">{{ expiring_soon }}</div>
+          <div class="stat-label">Expiring in 7 Days</div>
+        </div>
+        <div class="stat-icon" style="background:#fff3e0;color:#e65100"><i class="bi bi-clock-history"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <a href="{% url 'reports:expiry' %}" class="stat-value text-decoration-none text-dark d-block">View Report</a>
+          <div class="stat-label">Expiry Report</div>
+        </div>
+        <div class="stat-icon" style="background:#fce4ec;color:#c62828"><i class="bi bi-calendar-x-fill"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Members -->
+<div class="GymFlow-table">
+  <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+    <h6 class="mb-0 fw-600">Recent Members</h6>
+    <a href="{% url 'members:list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+  </div>
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Member ID</th>
+        <th>Branch</th>
+        <th>Plan</th>
+        <th>Expiry</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in recent_members %}
+      <tr onclick="window.location='{% url 'members:detail' member.pk %}'" style="cursor:pointer">
+        <td>
+          <div class="fw-500">{{ member.full_name }}</div>
+          <div class="text-muted small">{{ member.phone }}</div>
+        </td>
+        <td class="small text-muted">{{ member.member_id }}</td>
+        <td>{{ member.branch.name }}</td>
+        <td>{{ member.plan.name|default:"—" }}</td>
+        <td>{{ member.membership_expiry|default:"—" }}</td>
+        <td>
+          {% if member.is_active_member %}
+            <span class="badge badge-active rounded-pill px-2">Active</span>
+          {% else %}
+            <span class="badge badge-expired rounded-pill px-2">Expired</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No members yet. <a href="{% url 'members:create' %}">Add one</a></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

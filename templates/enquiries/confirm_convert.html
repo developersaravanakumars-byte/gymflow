@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Convert Enquiry — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Convert to Member</h1>
+</div>
+<div class="form-card" style="max-width:480px">
+  <p>Are you sure you want to convert <strong>{{ enquiry.name }}</strong> to a member?</p>
+  <p class="text-muted small">This will create a new member profile with their name, phone, and email. You can complete the rest of their details on the next page.</p>
+  <form method="post">
+    {% csrf_token %}
+    <div class="d-flex gap-2 mt-3">
+      <button type="submit" class="btn btn-primary">Yes, Convert to Member</button>
+      <a href="{% url 'enquiries:detail' enquiry.pk %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

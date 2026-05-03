@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header">
+  <a href="{% url 'enquiries:list' %}" class="text-muted small"><i class="bi bi-arrow-left"></i> Enquiries</a>
+  <h1 class="mt-1">{{ title }}</h1>
+</div>
+<div class="form-card" style="max-width:620px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-500">Name *</label>
+        {{ form.name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Phone *</label>
+        {{ form.phone }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Email</label>
+        {{ form.email }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Branch *</label>
+        {{ form.branch }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Source</label>
+        {{ form.source }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Status</label>
+        {{ form.status }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Interests</label>
+        {{ form.interests }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Follow-up Date</label>
+        {{ form.follow_up_date }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Notes</label>
+        {{ form.notes }}
+      </div>
+    </div>
+    {% if form.errors %}
+    <div class="alert alert-danger mt-3">
+      {% for field, errors in form.errors.items %}{% for error in errors %}<div>{{ error }}</div>{% endfor %}{% endfor %}
+    </div>
+    {% endif %}
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary">Save Enquiry</button>
+      <a href="{% url 'enquiries:list' %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Enquiries — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Enquiries</h1>
+    <div class="text-muted">{{ enquiries.count }} enquir{{ enquiries.count|pluralize:"y,ies" }}</div>
+  </div>
+  <a href="{% url 'enquiries:create' %}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i> New Enquiry
+  </a>
+</div>
+
+<div class="d-flex gap-2 mb-3">
+  <a href="{% url 'enquiries:list' %}" class="btn btn-sm {% if not status %}btn-primary{% else %}btn-outline-secondary{% endif %}">All</a>
+  <a href="?status=new" class="btn btn-sm {% if status == 'new' %}btn-primary{% else %}btn-outline-secondary{% endif %}">New</a>
+  <a href="?status=follow_up" class="btn btn-sm {% if status == 'follow_up' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Follow-up</a>
+  <a href="?status=converted" class="btn btn-sm {% if status == 'converted' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Converted</a>
+  <a href="?status=lost" class="btn btn-sm {% if status == 'lost' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Lost</a>
+</div>
+
+<div class="GymFlow-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Branch</th>
+        <th>Source</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for enquiry in enquiries %}
+      <tr>
+        <td><div class="fw-500">{{ enquiry.name }}</div><div class="text-muted small">{{ enquiry.interests }}</div></td>
+        <td>{{ enquiry.phone }}</td>
+        <td>{{ enquiry.branch.name }}</td>
+        <td>{{ enquiry.get_source_display }}</td>
+        <td>
+          {% if enquiry.status == 'new' %}<span class="badge bg-primary rounded-pill px-2">New</span>
+          {% elif enquiry.status == 'follow_up' %}<span class="badge badge-expiring rounded-pill px-2">Follow-up</span>
+          {% elif enquiry.status == 'converted' %}<span class="badge badge-active rounded-pill px-2">Converted</span>
+          {% else %}<span class="badge bg-secondary rounded-pill px-2">Lost</span>{% endif %}
+        </td>
+        <td class="small text-muted">{{ enquiry.created_at|date:"d M Y" }}</td>
+        <td class="text-end">
+          <a href="{% url 'enquiries:detail' enquiry.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-center text-muted py-4">No enquiries yet. <a href="{% url 'enquiries:create' %}">Add one</a></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

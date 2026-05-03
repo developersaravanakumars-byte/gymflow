@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Bulk Upload — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header">
+  <a href="{% url 'members:list' %}" class="text-muted small"><i class="bi bi-arrow-left"></i> Members</a>
+  <h1 class="mt-1">Bulk Upload Members</h1>
+</div>
+<div class="form-card" style="max-width:520px">
+  <div class="alert alert-info mb-4">
+    <strong>Excel Format Required:</strong><br>
+    Columns in order: <code>First Name, Last Name, Phone, Email</code><br>
+    Row 1 should be headers. Data starts from row 2.
+  </div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label fw-500">Branch *</label>
+        {{ form.branch }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Excel File (.xlsx) *</label>
+        {{ form.excel_file }}
+      </div>
+    </div>
+    {% if form.errors %}
+    <div class="alert alert-danger mt-3">
+      {% for field, errors in form.errors.items %}{% for error in errors %}<div>{{ error }}</div>{% endfor %}{% endfor %}
+    </div>
+    {% endif %}
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary">Upload Members</button>
+      <a href="{% url 'members:list' %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

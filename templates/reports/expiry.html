@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Expiry Report — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div><h1>Expiry Report</h1><div class="text-muted">Members expiring in next {{ days }} days</div></div>
+  <form method="get" class="d-flex gap-2 align-items-center">
+    <select name="days" class="form-select" style="max-width:160px" onchange="this.form.submit()">
+      <option value="7" {% if days == 7 %}selected{% endif %}>Next 7 days</option>
+      <option value="15" {% if days == 15 %}selected{% endif %}>Next 15 days</option>
+      <option value="30" {% if days == 30 %}selected{% endif %}>Next 30 days</option>
+      <option value="60" {% if days == 60 %}selected{% endif %}>Next 60 days</option>
+    </select>
+  </form>
+</div>
+<div class="GymFlow-table">
+  <table class="table table-hover mb-0">
+    <thead><tr><th>Member</th><th>Member ID</th><th>Branch</th><th>Plan</th><th>Expiry Date</th><th>Days Left</th><th></th></tr></thead>
+    <tbody>
+      {% for member in members %}
+      <tr>
+        <td><div class="fw-500">{{ member.full_name }}</div><div class="text-muted small">{{ member.phone }}</div></td>
+        <td class="small text-muted">{{ member.member_id }}</td>
+        <td>{{ member.branch.name }}</td>
+        <td>{{ member.plan.name|default:"—" }}</td>
+        <td>{{ member.membership_expiry }}</td>
+        <td>
+          {% if member.days_until_expiry <= 7 %}
+            <span class="text-danger fw-500">{{ member.days_until_expiry }} days</span>
+          {% else %}
+            <span class="text-warning fw-500">{{ member.days_until_expiry }} days</span>
+          {% endif %}
+        </td>
+        <td><a href="{% url 'members:detail' member.pk %}" class="btn btn-sm btn-outline-secondary">View</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-center text-muted py-4">No members expiring in this period.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

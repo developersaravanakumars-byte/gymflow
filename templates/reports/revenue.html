@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Revenue Report — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div><h1>Revenue Report</h1><div class="text-muted">Month: {{ month }}</div></div>
+  <form method="get" class="d-flex gap-2 align-items-center">
+    <input type="month" name="month" value="{{ month }}" class="form-control" style="max-width:200px">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </form>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-value text-success">₹{{ total }}</div>
+      <div class="stat-label">Total Revenue This Month</div>
+    </div>
+  </div>
+</div>
+
+{% if by_branch %}
+<div class="GymFlow-table mb-4">
+  <div class="p-3 border-bottom fw-600">Revenue by Branch</div>
+  <table class="table mb-0">
+    <thead><tr><th>Branch</th><th>Revenue</th></tr></thead>
+    <tbody>
+      {% for row in by_branch %}
+      <tr><td>{{ row.member__branch__name }}</td><td>₹{{ row.total }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<div class="GymFlow-table">
+  <div class="p-3 border-bottom fw-600">All Payments This Month</div>
+  <table class="table mb-0">
+    <thead><tr><th>Member</th><th>Plan</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+    <tbody>
+      {% for payment in payments %}
+      <tr>
+        <td>{{ payment.member.full_name }}</td>
+        <td>{{ payment.plan.name|default:"—" }}</td>
+        <td>₹{{ payment.final_amount }}</td>
+        <td>{{ payment.get_method_display }}</td>
+        <td><span class="badge badge-{{ payment.status }} rounded-pill px-2">{{ payment.get_status_display }}</span></td>
+        <td>{{ payment.created_at|date:"d M Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-muted py-3">No payments this month.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

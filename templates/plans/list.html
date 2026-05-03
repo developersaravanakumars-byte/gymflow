@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Plans — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1>Membership Plans</h1>
+    <div class="text-muted">{{ plans.count }} plan{{ plans.count|pluralize }}</div>
+  </div>
+  <a href="{% url 'plans:create' %}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i> Add Plan
+  </a>
+</div>
+
+<div class="GymFlow-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th>Plan Name</th>
+        <th>Duration</th>
+        <th>Price</th>
+        <th>Members</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for plan in plans %}
+      <tr>
+        <td><div class="fw-500">{{ plan.name }}</div><div class="text-muted small">{{ plan.description|truncatechars:50 }}</div></td>
+        <td>{{ plan.duration }} {{ plan.get_duration_unit_display }}</td>
+        <td>₹{{ plan.price }}</td>
+        <td>{{ plan.members.count }}</td>
+        <td>
+          {% if plan.is_active %}
+            <span class="badge badge-active rounded-pill px-2">Active</span>
+          {% else %}
+            <span class="badge badge-expired rounded-pill px-2">Inactive</span>
+          {% endif %}
+        </td>
+        <td class="text-end">
+          <a href="{% url 'plans:edit' plan.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No plans yet. <a href="{% url 'plans:create' %}">Add one</a></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

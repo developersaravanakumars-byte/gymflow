@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header">
+  <a href="{% url 'payments:list' %}" class="text-muted small"><i class="bi bi-arrow-left"></i> Payments</a>
+  <h1 class="mt-1">{{ title }}</h1>
+</div>
+<div class="form-card" style="max-width:620px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-500">Member *</label>
+        {{ form.member }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Plan</label>
+        {{ form.plan }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Receipt Number</label>
+        {{ form.receipt_number }}
+        <div class="form-text">Leave blank to auto-generate (e.g. RCP-00001)</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Method *</label>
+        {{ form.method }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Amount (₹) *</label>
+        {{ form.amount }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Discount (₹)</label>
+        {{ form.discount }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Coverage From *</label>
+        {{ form.coverage_from }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Coverage To *</label>
+        {{ form.coverage_to }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Paid On</label>
+        {{ form.paid_on }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Status *</label>
+        {{ form.status }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Notes</label>
+        {{ form.notes }}
+      </div>
+    </div>
+    {% if form.errors %}
+    <div class="alert alert-danger mt-3">
+      {% for field, errors in form.errors.items %}{% for error in errors %}<div>{{ field }}: {{ error }}</div>{% endfor %}{% endfor %}
+    </div>
+    {% endif %}
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary">Save Payment</button>
+      <a href="{% url 'payments:list' %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

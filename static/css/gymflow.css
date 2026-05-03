@@ -1,0 +1,127 @@
+:root {
+  --primary: #7F77DD;
+  --primary-dark: #534AB7;
+  --sidebar-bg: #1e1b2e;
+  --sidebar-text: #c8c6d8;
+  --sidebar-active: rgba(127,119,221,0.18);
+}
+
+body { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; }
+
+/* Sidebar */
+.sidebar {
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.brand-icon {
+  width: 30px;
+  height: 30px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #fff;
+}
+.sidebar-section {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6880;
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 1px;
+}
+.sidebar-link:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.sidebar-link.active { background: var(--sidebar-active); color: #a8a2f0; }
+.sidebar-link i { font-size: 15px; width: 18px; }
+
+.user-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Cards */
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 22px;
+  border: 1px solid #eee;
+}
+.stat-card .stat-value { font-size: 28px; font-weight: 600; color: #1a1a2e; }
+.stat-card .stat-label { font-size: 12px; color: #888; margin-top: 2px; }
+.stat-card .stat-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+
+/* Table */
+.gymflow-table { background: #fff; border-radius: 12px; border: 1px solid #eee; overflow: hidden; }
+.gymflow-table table { margin: 0; }
+.gymflow-table thead th { background: #f8f9fb; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; border-bottom: 1px solid #eee; padding: 12px 16px; }
+.gymflow-table tbody td { padding: 12px 16px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+.gymflow-table tbody tr:last-child td { border-bottom: none; }
+.gymflow-table tbody tr:hover { background: #fafafa; }
+
+/* Page header */
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 22px; font-weight: 600; color: #1a1a2e; margin: 0; }
+.page-header .text-muted { font-size: 13px; }
+
+/* Badges */
+.badge-active { background: #e8f5e9; color: #2e7d32; font-weight: 500; }
+.badge-expired { background: #fce4ec; color: #c62828; font-weight: 500; }
+.badge-expiring { background: #fff3e0; color: #e65100; font-weight: 500; }
+.badge-pending { background: #fff3e0; color: #e65100; }
+.badge-paid { background: #e8f5e9; color: #2e7d32; }
+.badge-overdue { background: #fce4ec; color: #c62828; }
+
+/* Buttons */
+.btn-primary { background: var(--primary); border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn-outline-primary { color: var(--primary); border-color: var(--primary); }
+.btn-outline-primary:hover { background: var(--primary); border-color: var(--primary); }
+
+/* Form */
+.form-card { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 28px; }
+.form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(127,119,221,0.15); }
+
+/* Member photo */
+.member-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; color: var(--primary); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { display: none !important; }
+}

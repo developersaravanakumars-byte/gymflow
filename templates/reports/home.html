@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Reports — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Reports Overview</h1>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="stat-value">{{ total_active }}</div><div class="stat-label">Active Members</div></div>
+        <div class="stat-icon" style="background:#eeedfe;color:#7F77DD"><i class="bi bi-people-fill"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="stat-value text-warning">{{ expiring_30 }}</div><div class="stat-label">Expiring in 30 Days</div></div>
+        <div class="stat-icon" style="background:#fff3e0;color:#e65100"><i class="bi bi-clock-history"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="stat-value text-success">₹{{ total_revenue }}</div><div class="stat-label">Total Revenue</div></div>
+        <div class="stat-icon" style="background:#e8f5e9;color:#2e7d32"><i class="bi bi-currency-rupee"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="stat-value text-danger">{{ pending_count }}</div><div class="stat-label">Pending Payments</div></div>
+        <div class="stat-icon" style="background:#fce4ec;color:#c62828"><i class="bi bi-exclamation-circle-fill"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <a href="{% url 'reports:revenue' %}" class="text-decoration-none">
+      <div class="stat-card h-100">
+        <div class="stat-icon mb-3" style="background:#eeedfe;color:#7F77DD;width:44px;height:44px"><i class="bi bi-currency-rupee"></i></div>
+        <div class="fw-600">Revenue Report</div>
+        <div class="text-muted small mt-1">Monthly payment collection by branch</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{% url 'reports:expiry' %}" class="text-decoration-none">
+      <div class="stat-card h-100">
+        <div class="stat-icon mb-3" style="background:#fff3e0;color:#e65100;width:44px;height:44px"><i class="bi bi-calendar-x"></i></div>
+        <div class="fw-600">Expiry Report</div>
+        <div class="text-muted small mt-1">Members nearing membership expiry</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{% url 'reports:pending' %}" class="text-decoration-none">
+      <div class="stat-card h-100">
+        <div class="stat-icon mb-3" style="background:#fce4ec;color:#c62828;width:44px;height:44px"><i class="bi bi-exclamation-circle"></i></div>
+        <div class="fw-600">Pending Payments</div>
+        <div class="text-muted small mt-1">Outstanding and overdue payments</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{% url 'reports:export_members' %}" class="text-decoration-none">
+      <div class="stat-card h-100">
+        <div class="stat-icon mb-3" style="background:#e8f5e9;color:#2e7d32;width:44px;height:44px"><i class="bi bi-file-earmark-excel"></i></div>
+        <div class="fw-600">Export Members</div>
+        <div class="text-muted small mt-1">Download all members as Excel file</div>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock %}

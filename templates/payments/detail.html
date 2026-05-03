@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Payment Detail — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <a href="{% url 'payments:list' %}" class="text-muted small"><i class="bi bi-arrow-left"></i> Payments</a>
+    <h1 class="mt-1">Payment #{{ payment.id }}</h1>
+    <div class="text-muted small">Receipt: <span class="fw-500 text-dark">{{ payment.receipt_number }}</span></div>
+  </div>
+  {% if payment.invoice %}
+  <a href="{% url 'payments:invoice_pdf' payment.invoice.pk %}" class="btn btn-outline-primary" target="_blank">
+    <i class="bi bi-file-pdf me-1"></i> Download Invoice
+  </a>
+  {% endif %}
+</div>
+<div class="form-card" style="max-width:600px">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="text-muted small">Receipt Number</div>
+      <div class="fw-500">{{ payment.receipt_number }}</div>
+    </div>
+    <div class="col-md-6">
+      <div class="text-muted small">Member ID</div>
+      <div class="fw-500">{{ payment.member.member_id }}</div>
+    </div>
+    <div class="col-md-6">
+      <div class="text-muted small">Member</div>
+      <div class="fw-500">{{ payment.member.full_name }}</div>
+    </div>
+    <div class="col-md-6">
+      <div class="text-muted small">Branch</div>
+      <div class="fw-500">{{ payment.member.branch.name }}</div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-muted small">Amount</div>
+      <div class="fw-500">₹{{ payment.amount }}</div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-muted small">Discount</div>
+      <div class="fw-500">₹{{ payment.discount }}</div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-muted small">Final Amount</div>
+      <div class="fw-500 text-success">₹{{ payment.final_amount }}</div>
+    </div>
+    <div class="col-md-6">
+      <div class="text-muted small">Coverage Period</div>
+      <div class="fw-500">{{ payment.coverage_from }} – {{ payment.coverage_to }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-muted small">Method</div>
+      <div class="fw-500">{{ payment.get_method_display }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-muted small">Status</div>
+      <span class="badge badge-{{ payment.status }} rounded-pill px-2">{{ payment.get_status_display }}</span>
+    </div>
+    {% if payment.notes %}
+    <div class="col-12">
+      <div class="text-muted small">Notes</div>
+      <div>{{ payment.notes }}</div>
+    </div>
+    {% endif %}
+    {% if payment.invoice %}
+    <div class="col-12">
+      <div class="text-muted small">Invoice Number</div>
+      <div class="fw-500">{{ payment.invoice.invoice_number }}</div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="mt-4">
+    <a href="{% url 'members:detail' payment.member.pk %}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-person me-1"></i> View Member
+    </a>
+  </div>
+</div>
+{% endblock %}

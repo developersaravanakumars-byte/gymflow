@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Archive Member — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Archive Member</h1></div>
+<div class="form-card" style="max-width:480px">
+  <p>Are you sure you want to archive <strong>{{ member.full_name }}</strong>?</p>
+  <p class="text-muted small">Their data will be preserved. You can restore them anytime from the Archived section.</p>
+  <form method="post">
+    {% csrf_token %}
+    <div class="d-flex gap-2 mt-3">
+      <button type="submit" class="btn btn-danger">Yes, Archive</button>
+      <a href="{% url 'members:detail' member.pk %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

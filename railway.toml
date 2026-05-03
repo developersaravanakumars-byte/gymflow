@@ -1,0 +1,15 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "gunicorn gymflow.wsgi --bind 0.0.0.0:$PORT --workers 2"
+healthcheckPath = "/dashboard/"
+
+[[services]]
+name = "gymflow-web"
+
+# Cron job — runs every night at midnight IST (18:30 UTC)
+[[cronJobs]]
+name = "archive-expired-members"
+schedule = "30 18 * * *"
+command = "python manage.py archive_members"

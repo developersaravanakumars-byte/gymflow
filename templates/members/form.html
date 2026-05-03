@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — GymFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <a href="{% url 'members:list' %}" class="text-muted small"><i class="bi bi-arrow-left"></i> Members</a>
+  <h1 class="mt-1">{{ title }}</h1>
+</div>
+
+<div class="form-card" style="max-width:720px">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-500">First Name *</label>
+        {{ form.first_name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Last Name</label>
+        {{ form.last_name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Phone *</label>
+        {{ form.phone }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-500">Email</label>
+        {{ form.email }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-500">Gender</label>
+        {{ form.gender }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-500">Date of Birth</label>
+        {{ form.date_of_birth }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-500">Branch *</label>
+        {{ form.branch }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Address</label>
+        {{ form.address }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Photo</label>
+        {{ form.photo }}
+      </div>
+
+      <div class="col-12"><hr><h6 class="fw-600">Membership Details</h6></div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-500">Plan</label>
+        {{ form.plan }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-500">Start Date</label>
+        {{ form.membership_start }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-500">Expiry Date</label>
+        {{ form.membership_expiry }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-500">Notes</label>
+        {{ form.notes }}
+      </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="alert alert-danger mt-3">
+      {% for field, errors in form.errors.items %}
+        {% for error in errors %}<div>{{ field }}: {{ error }}</div>{% endfor %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary">Save Member</button>
+      <a href="{% url 'members:list' %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

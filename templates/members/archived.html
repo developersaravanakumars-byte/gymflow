@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Archived Members — GymFlow{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Archived Members</h1><div class="text-muted">{{ members.count }} archived member{{ members.count|pluralize }}</div></div>
+<div class="GymFlow-table">
+  <table class="table table-hover mb-0">
+    <thead><tr><th>Member</th><th>Member ID</th><th>Branch</th><th>Plan</th><th>Expired</th><th></th></tr></thead>
+    <tbody>
+      {% for member in members %}
+      <tr>
+        <td><div class="fw-500">{{ member.full_name }}</div><div class="text-muted small">{{ member.phone }}</div></td>
+        <td class="small text-muted">{{ member.member_id }}</td>
+        <td>{{ member.branch.name }}</td>
+        <td>{{ member.plan.name|default:"—" }}</td>
+        <td>{{ member.membership_expiry|default:"—" }}</td>
+        <td class="text-end">
+          <a href="{% url 'members:detail' member.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+          <a href="{% url 'members:restore' member.pk %}" class="btn btn-sm btn-outline-success">Restore</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No archived members.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

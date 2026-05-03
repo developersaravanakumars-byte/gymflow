@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}{{ member.full_name }} — GymFlow{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <a href="{% url 'members:list' %}" class="text-muted small"><i class="bi bi-arrow-left"></i> Members</a>
+    <h1 class="mt-1">{{ member.full_name }}</h1>
+    <div class="text-muted small">ID: <span class="fw-500 text-dark">{{ member.member_id }}</span></div>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'payments:create' %}?member={{ member.pk }}" class="btn btn-outline-primary">
+      <i class="bi bi-cash me-1"></i> Record Payment
+    </a>
+    <a href="{% url 'members:edit' member.pk %}" class="btn btn-primary">
+      <i class="bi bi-pencil me-1"></i> Edit
+    </a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Profile -->
+  <div class="col-md-4">
+    <div class="form-card text-center">
+      {% if member.photo %}
+        <img src="{{ member.photo.url }}" class="member-photo mb-3 mx-auto d-block" style="width:80px;height:80px">
+      {% else %}
+        <div class="member-photo mb-3 mx-auto" style="width:80px;height:80px;font-size:32px">
+          {{ member.first_name|slice:":1" }}
+        </div>
+      {% endif %}
+      <h5 class="mb-1">{{ member.full_name }}</h5>
+      <div class="text-muted small mb-1">{{ member.branch.name }}</div>
+      <div class="small mb-3"><span class="badge bg-light text-secondary border fw-normal">{{ member.member_id }}</span></div>
+
+      {% if member.is_active_member %}
+        <span class="badge badge-active rounded-pill px-3 py-2">Active Member</span>
+      {% else %}
+        <span class="badge badge-expired rounded-pill px-3 py-2">Membership Expired</span>
+      {% endif %}
+
+      <hr>
+      <div class="text-start">
+        <div class="mb-2"><i class="bi bi-phone me-2 text-muted"></i>{{ member.phone }}</div>
+        {% if member.email %}<div class="mb-2"><i class="bi bi-envelope me-2 text-muted"></i>{{ member.email }}</div>{% endif %}
+        {% if member.date_of_birth %}<div class="mb-2"><i class="bi bi-cake me-2 text-muted"></i>{{ member.date_of_birth }}</div>{% endif %}
+        {% if member.address %}<div class="mb-2"><i class="bi bi-geo-alt me-2 text-muted"></i>{{ member.address }}</div>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Membership & Payments -->
+  <div class="col-md-8">
+    <div class="form-card mb-3">
+      <h6 class="fw-600 mb-3">Membership</h6>
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="text-muted small">Plan</div>
+          <div class="fw-500">{{ member.plan.name|default:"Not assigned" }}</div>
+        </div>
+        <div class="col-6">
+          <div class="text-muted small">Start Date</div>
+          <div class="fw-500">{{ member.membership_start|default:"—" }}</div>
+        </div>
+        <div class="col-6">
+          <div class="text-muted small">Expiry Date</div>
+          <div class="fw-500">{{ member.membership_expiry|default:"—" }}</div>
+        </div>
+        <div class="col-6">
+          <div class="text-muted small">Days Remaining</div>
+          <div class="fw-500 {% if member.days_until_expiry is not None and member.days_until_expiry <= 7 %}text-danger{% endif %}">
+            {% if member.days_until_expiry is not None %}{{ member.days_until_expiry }} days{% else %}—{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="GymFlow-table">
+      <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+        <h6 class="mb-0 fw-600">Payment History</h6>
+        <a href="{% url 'payments:create' %}?member={{ member.pk }}" class="btn btn-sm btn-primary">+ Add Payment</a>
+      </div>
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>Receipt #</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Period</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in member.payments.all %}
+          <tr>
+            <td class="small text-muted">{{ payment.receipt_number }}</td>
+            <td>{{ payment.paid_on|default:payment.created_at|date:"d M Y" }}</td>
+            <td>₹{{ payment.final_amount }}</td>
+            <td>{{ payment.get_method_display }}</td>
+            <td>{{ payment.coverage_from }} – {{ payment.coverage_to }}</td>
+            <td><span class="badge badge-{{ payment.status }} rounded-pill px-2">{{ payment.get_status_display }}</span></td>
+            <td>
+              {% if payment.invoice %}
+                <a href="{% url 'payments:invoice_pdf' payment.invoice.pk %}" class="btn btn-sm btn-outline-secondary" target="_blank">
+                  <i class="bi bi-file-pdf"></i>
+                </a>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="text-center text-muted py-3">No payments recorded.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-3">
+      <a href="{% url 'members:archive' member.pk %}" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-archive me-1"></i> Archive Member
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
