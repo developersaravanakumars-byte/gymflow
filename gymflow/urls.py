@@ -4,8 +4,8 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
     path('dashboard/', include('members.urls')),
     path('enquiries/', include('enquiries.urls')),
     path('plans/', include('plans.urls')),

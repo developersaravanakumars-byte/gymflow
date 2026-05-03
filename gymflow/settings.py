@@ -102,6 +102,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_USERNAME_REQUIRED = True
 
 LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 LANGUAGE_CODE = 'en-us'
